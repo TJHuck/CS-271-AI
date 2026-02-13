@@ -16,37 +16,60 @@ nodes = [["Wesley Hall",400,200],["Goodrich Chapel",400,440],["Observatory Cross
          ["Quad Streetlamp Intersection",400,640],["Wesley Hall Side Crosswalk",400,245],
          ["Kresge Gymnasium", 180, 680],["Tau Kappa Epsilon",750,850],
          ["Delta Sigma Phi",645,855],["Sigma Chi",650,920],["Ferguson Circular Intersection",417,730],
-         ["The Rock",483,640],["Vulgamore Quad Entrance",483,600],["Fiske House Corner Crosswalk",445,535],
+         ["The Rock",483,640],["Vulgamore Hall",483,600],["Fiske House Corner Crosswalk",445,535],
          ["Quad Fiske House Crosswalk",443,555],["Vulgamore Robinson Front Entrance Intersection",565,635],
          ["Robinson Kellog Front Entrance Intersection",565,725],["Alpha Tau Omega",745,920],["Sigma Nu",785,920],
-         ["Delta Tau Delta",790,855],["Fraternity Alleyway",780,885]]
+         ["Delta Tau Delta",790,855],["Fraternity Alleyway",780,885],["Robinson Hall",565,680],["Kellog Center",550,755],["Ferguson",417,760],
+         ["Library Sidewalk",240,640],["Center Of Quad",315,675],["Robinson Hall Back Entrance",483,685],["Science Complex Crosswalk",605,285],
+         ["Sidewalk",605,440],["Science Complex",650,430],["Crosswalk",610,535]]
 
-for node in nodes:
+
+
+
+
+##comment out when all nodes and edges added
+########################################
+for i,node in enumerate(nodes):
     cv2.circle(img,(node[1],node[2]),6,(0,0,255),-1)
+    cv2.putText(img,str(i), (node[1]+5,node[2]+5),1, 1.5, 255,2)
+########################################
 
+
+    
 ## manually add to edges. [index of point1 in nodes, index of point2 in nodes]
-edges = [[0,10],[10,8],[8,2],[2,7],[7,2],[2,3],[3,4],[4,5]]
+edges = [[0,10],[10,8],[8,1],[1,7],[2,7],[2,3],[3,4],[4,5],[7,18],[2,19],[18,19],[19,17],[17,16],[16,9],[9,2],[9,4],
+         [4,30],[6,11],[29,5],[29,6],[29,11],[9,15],[15,28],[15,6],[15,21],[28,27],[30,6],[29,30],[15,30],[16,31],
+         [31,15],[16,20],[20,26],[26,21],[21,27],[32,8],[32,33],[1,33],[33,34],[35,33]]
+
+
+
 for edge in edges:
     point1 = (nodes[edge[0]][1],nodes[edge[0]][2])
     point2 = (nodes[edge[1]][1],nodes[edge[1]][2])
-    cv2.line(img,point1,point2,(255,0,0),3)
-    ## calculate distance
+    cv2.line(img,point1,point2,(255,0,0),3) ## comment this line out when all nodes and edges are added
     (x1,y1)=point1
     (x2,y2)=point2
     dist = math.sqrt((x1-x2)**2 + (y1-y2)**2)
     edge.append(dist*yardPerPixel)
-    
-print(edges)
+
+
+
+##comment out when all nodes and edges added
+########################################
 ## show image
-## cv2.imshow('Map', img) ## <--- This is the way Nathan had to display the original image, below is just the way I'm scaling it to fit my screen
 resized = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
 cv2.imshow('Resized', resized)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+########################################
+
+
+
+
 
 ## make graph
 graph = nx.Graph()
-
+img = cv2.imread("collegemap.png")
 ## add nodes from previous work to graph
 for i,node in enumerate(nodes):
     graph.add_node(i,pos=(node[1],node[2]),name=node[0])
@@ -54,4 +77,37 @@ for i,node in enumerate(nodes):
 ## add edges from previous work to graph
 for edge in edges:
     graph.add_edge(edge[0],edge[1],weight=edge[2])
-print(graph)
+
+
+
+
+## begin user input
+for node in graph.nodes:
+    print(str(node)+": "+graph.nodes[node]['name'])
+print("To select a location input the number before. Example: 0:Wesley Hall. ENTER 0")
+start=int(input("Please enter your starting location number: "))
+end=int(input("Please enter your final location number: "))
+
+## A star algorithm
+def heuristic(a,b):
+    (x1,y1) = graph.nodes[a]["pos"]
+    (x2,y2) = graph.nodes[b]["pos"]
+    dist = math.sqrt((x1-x2)**2 + (y1-y2)**2)
+    return dist*yardPerPixel
+
+## we probably cant use the built in astar but idk
+finalPath = nx.astar_path(graph,start,end,heuristic=heuristic,weight="weight")
+
+cv2.circle(img,(nodes[finalPath[0]][1],nodes[finalPath[0]][2]),6,(0,0,255),-1)
+for p in range(1,len(finalPath)):
+    point1 = (nodes[finalPath[p-1]][1],nodes[finalPath[p-1]][2])
+    point2 = (nodes[finalPath[p]][1],nodes[finalPath[p]][2])
+    cv2.line(img,point1,point2,(255,0,0),3)
+    cv2.circle(img,(nodes[finalPath[p]][1],nodes[finalPath[p]][2]),6,(0,0,255),-1)
+
+
+resized = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
+cv2.imshow('Resized', resized)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
