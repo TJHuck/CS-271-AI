@@ -66,7 +66,7 @@ cv2.destroyAllWindows()
 
 
 
-
+"""
 ## make graph
 graph = nx.Graph()
 img = cv2.imread("collegemap.png")
@@ -95,8 +95,47 @@ def heuristic(a,b):
     dist = math.sqrt((x1-x2)**2 + (y1-y2)**2)
     return dist*yardPerPixel
 
+def astar(graph,start,end):
+    ## looked up breath first search implementation from internet
+    ## https://www.geeksforgeeks.org/python/python-program-for-breadth-first-search-or-bfs-for-a-graph/
+    nodes = graph.nodes
+    if start ==end:
+        return [start]
+
+    ## we need [node,weight] where weight is weight up to this point. NOT HEURISTIC
+    nodeQueue = [[start,0]]
+    ## weight + heuristic => weight=0 for start so just heuristic
+    weightQueue = [heuristic(start,end)]
+    pathQueue = [[start]]
+    visited = [False]*len(nodes)
+    while nodeQueue:
+        ## get best node
+        bestIndex = weightQueue.index(min(weightQueue))
+        node = nodeQueue.pop(bestIndex)
+        weight = node[1]
+        node = node[0]
+        weightQueue.pop(bestIndex)
+        path = pathQueue.pop(bestIndex)
+        visited[node]=True
+        if node == end:
+            return path
+        for children in graph.neighbors(node):
+            if visited[children]:
+                continue
+            w = weight+graph[node][children]["weight"]
+            nodeQueue.append([children,w])
+            weightQueue.append(w+heuristic(node,children))
+            pathPlus = path+[children]
+            pathQueue.append(pathPlus)
+            
+        
+        
+        
+    
+
 ## we probably cant use the built in astar but idk
-finalPath = nx.astar_path(graph,start,end,heuristic=heuristic,weight="weight")
+##finalPath = nx.astar_path(graph,start,end,heuristic=heuristic,weight="weight")
+finalPath = astar(graph,start,end)
 
 cv2.circle(img,(nodes[finalPath[0]][1],nodes[finalPath[0]][2]),6,(0,0,255),-1)
 for p in range(1,len(finalPath)):
@@ -111,3 +150,6 @@ cv2.imshow('Resized', resized)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
+"""
+    
+    
