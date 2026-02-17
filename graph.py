@@ -1,3 +1,5 @@
+#### MADE BY: TERRY HUCK, NATHAN PENFIELD, AND PACEY MINK
+
 import cv2
 import networkx as nx #found on internet as recommended graph library
 import math
@@ -10,19 +12,21 @@ img = cv2.imread("collegemap.png")
 
 
 ## manually add to nodes. "P" for sidewalk intersections that arent buildings
-nodes = [["Wesley Hall",400,200],["Goodrich Chapel",400,440],["Observatory Crosswalk",400,560],
-         ["Observatory",380,580],["Library Accessibility Ramp",340,635],["Stockwell/Mudd Library",280,635],
-         ["Olin Hall",275,720],["Chapel Corner Crosswalk",400,535],["Wesley Chapel Side Crosswalk",400,285],
-         ["Quad Streetlamp Intersection",400,640],["Wesley Hall Side Crosswalk",400,245],
-         ["Kresge Gymnasium", 180, 680],["Tau Kappa Epsilon",750,850],
-         ["Delta Sigma Phi",645,855],["Sigma Chi",650,920],["Ferguson Circular Intersection",417,730],
-         ["The Rock",483,640],["Vulgamore Hall",483,600],["Fiske House Corner Crosswalk",445,535],
-         ["Quad Fiske House Crosswalk",443,555],["Vulgamore Robinson Front Entrance Intersection",565,635],
-         ["Robinson Kellog Front Entrance Intersection",565,725],["Alpha Tau Omega",745,920],["Sigma Nu",785,920],
-         ["Delta Tau Delta",790,855],["Fraternity Alleyway",780,885],["Robinson Hall",565,680],["Kellog Center",550,755],["Ferguson",417,760],
-         ["Library Sidewalk",240,640],["Center Of Quad",315,675],["Robinson Hall Back Entrance",483,685],["Science Complex Crosswalk",605,285],
-         ["Sidewalk",605,440],["Science Complex",650,430],["Crosswalk",610,535]]
-
+nodes = nodes = [["Wesley Hall",400,200],["Goodrich Chapel",400,440],["Observatory Crosswalk",400,560],
+                ["Observatory",380,580],["Library Accessibility Ramp",340,635],["Stockwell/Mudd Library",280,635],
+                ["Olin Hall",275,720],["Chapel Corner Crosswalk",400,535],["Wesley Chapel Side Crosswalk",400,285],
+                ["Quad Streetlamp Intersection",400,640],["Wesley Hall Side Crosswalk",400,245],
+                ["Kresge Gymnasium", 180, 680],["Tau Kappa Epsilon",750,850],
+                ["Delta Sigma Phi",645,855],["Sigma Chi",650,920],["Ferguson Circular Intersection",417,730],
+                ["The Rock",483,640],["Vulgamore Hall",483,600],["Fiske House Corner Crosswalk",445,535],
+                ["Quad Fiske House Crosswalk",443,555],["Vulgamore Robinson Front Entrance Intersection",565,635],
+                ["Robinson Kellog Front Entrance Intersection",565,725],["Alpha Tau Omega",745,920],["Sigma Nu",785,920],
+                ["Delta Tau Delta",790,855],["Fraternity Alleyway",780,885],["Robinson Hall",565,680],["Kellog Center",550,755],["Ferguson",417,760],
+                ["Library Sidewalk",240,640],["Center Of Quad",315,675],["Robinson Hall Back Entrance",483,685],["Science Complex Crosswalk",605,285],
+                ["Sidewalk",605,440],["Science Complex",650,430],["Bobbit Visual Arts Croner Crosswalk",610,535],["Robinson Crosswalk", 605,680],["Baldwin Crosswalk", 635,680],
+                ["Baldwin Front ENtrance", 665,675],["Vulgamore Front Entrance Circular Intersection",585,600],["Vulgamore Front Entrance Corner Crosswalk",610,556],
+                ["Bobbit Visual Arts Crosswalk",530,535],["Vulgarmore Side Crosswalk",530,557],["Seaton Hall Front Corner Crosswalk",635,556],
+                ["Seaton Hall Front Entrance",715,556],["Mitchell Towers Circular Intersection",865,675],["Mitchell Towers Front Entrance", 925,675]]
 
 
 
@@ -39,7 +43,8 @@ for i,node in enumerate(nodes):
 ## manually add to edges. [index of point1 in nodes, index of point2 in nodes]
 edges = [[0,10],[10,8],[8,1],[1,7],[2,7],[2,3],[3,4],[4,5],[7,18],[2,19],[18,19],[19,17],[17,16],[16,9],[9,2],[9,4],
          [4,30],[6,11],[29,5],[29,6],[29,11],[9,15],[15,28],[15,6],[15,21],[28,27],[30,6],[29,30],[15,30],[16,31],
-         [31,15],[16,20],[20,26],[26,21],[21,27],[32,8],[32,33],[1,33],[33,34],[35,33]]
+         [31,15],[16,20],[20,26],[26,21],[21,27],[32,8],[32,33],[1,33],[33,34],[35,33],[26,36],[36,37],[37,38],[20,39],
+         [39,40],[40,35],[18,41],[19,42],[41,35],[42,40],[41,42],[42,39],[40,43],[43,44],[38,45],[45,46]]
 
 
 
